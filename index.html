@@ -1,0 +1,665 @@
+
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Mangolabs">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Mangolabs">
+  <meta name="application-name" content="Mangolabs">
+  <title>Mangolabs</title>
+
+  <link rel="manifest" href="https://codelabs.developers.google.com/manifest.json">
+  <link rel="shortcut icon" sizes="192x192" href="https://codelabs.developers.google.com/images/touch/icon_192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#37474F">
+  <meta name="apple-mobile-web-app-title" content="Google Codelabs">
+  <link rel="apple-touch-icon" href="images/touch/icon_144.png">
+
+  <!-- Win 8 -->
+  <meta name="msapplication-TileImage" content="https://codelabs.developers.google.com/images/touch/icon_144.png">
+  <meta name="msapplication-TileColor" content="#37474F">
+
+  <link rel="stylesheet" href="https://codelabs.developers.google.com/styles/main.css">
+
+  
+
+  <link rel="import" href="https://codelabs.developers.google.com/elements/critical.html" async>
+
+  <style is="custom-style">
+    :root {
+      --paper-tabs-selection-bar-color: currentcolor;
+      --paper-input-container-underline: {
+        display: none;
+      };
+      --paper-input-container-underline-focus: {
+        display: none;
+      };
+    }
+
+    #mainToolbar paper-icon-button {
+      --paper-icon-button-ink-color: rgba(255,255,255,0.6);
+    }
+
+    .loading paper-drawer-panel {
+      --paper-drawer-panel-scrim: {
+        display: none;
+      };
+    }
+
+    #langselect {
+      --paper-input-container-input: {
+        text-transform: uppercase;
+        font-size: inherit;
+      };
+    }
+
+    #categoryfilter {
+      --paper-input-container: {
+        padding: 8px;
+      };
+    }
+  </style>
+</head>
+<!-- <body id="app" is="my-app" class="loading fullbleed "> -->
+<body id="app" is="body-bind" class="loading fullbleed ">
+
+  <span id="browser-sync-binding"></span>
+
+  <!-- Needed 2 queries due to https://github.com/PolymerElements/iron-media-query/issues/15 -->
+  <iron-media-query query="(max-width:768px)" hidden
+      query-matches="{{isPhoneSize}}"></iron-media-query>
+  <iron-media-query query="(min-width: 768px)" hidden
+      query-matches="{{isDesktopSize}}"></iron-media-query>
+
+  <paper-drawer-panel id="drawer" force-narrow>
+
+ 
+
+    <paper-header-panel id="main" mode="waterfall" main>
+      
+       
+
+      
+      <header id="banner" down$="[[_toBoolean(selectedFilter)]]">
+        <div class="banner-slider">
+          <div class="site-width layout horizontal center">
+            <h3 id="banner_slider_title">Mangolabs</h3>
+            <template is="dom-if"
+                      if="[[_showMoreFiltersArrow(selectedFilter,isDesktopSize)]]">
+              <div class="banner_arrows">
+                <paper-icon-button icon="paper-tabs:chevron-left"
+                    on-tap="_shiftContentLeft"></paper-icon-button>
+                <paper-icon-button icon="paper-tabs:chevron-right"
+                    on-tap="_shiftContentRight"></paper-icon-button>
+              </div>
+            </template>
+          </div>
+        </div>
+        <div class="site-width">
+          
+          <h2 class="banner-title">Welcome to Mangolabs!</h2>
+          <div class="banner-description"
+               data-filter-selected$="[[_toBoolean(selectedFilter)]]">
+            <p class="banner-info">Mangolabs blah blah</p>
+
+            <iron-pages selected="[[selectedFilter]]"
+                        attr-for-selected="filter"
+                        class="banner-info"
+                        on-iron-select="onFilterPageSelect">
+              <paper-listbox class="banner-technologies" filter="technologies"
+                             on-iron-activate="filterBy"
+                             attr-for-selected="filter"><paper-item filter="About">About</paper-item>
+                    <paper-item filter="Ads">Ads</paper-item>
+                    <paper-item filter="Analytics">Analytics</paper-item>
+                    <paper-item filter="Android">Android</paper-item>
+                    <paper-item filter="Android Auto">Android Auto</paper-item>
+                    <paper-item filter="Android TV">Android TV</paper-item>
+                    <paper-item filter="Android Wear">Android Wear</paper-item>
+                    <paper-item filter="Apps">Apps</paper-item>
+                    <paper-item filter="Assistant">Assistant</paper-item>
+                    <paper-item filter="Blockly">Blockly</paper-item>
+                    <paper-item filter="Cast">Cast</paper-item>
+                    <paper-item filter="Cloud">Cloud</paper-item>
+                    <paper-item filter="Firebase">Firebase</paper-item>
+                    <paper-item filter="Geo">Geo</paper-item>
+                    <paper-item filter="IoT">IoT</paper-item>
+                    <paper-item filter="Search">Search</paper-item>
+                    <paper-item filter="Sheets">Sheets</paper-item>
+                    <paper-item filter="TensorFlow">TensorFlow</paper-item>
+                    <paper-item filter="Unity">Unity</paper-item>
+                    <paper-item filter="Virtual Reality">Virtual Reality</paper-item>
+                    <paper-item filter="Web">Web</paper-item>
+                    
+                </paper-listbox>
+         
+            </iron-pages>
+
+           
+            
+
+          </div>
+        </div>
+      </header>
+
+      <main>
+       
+
+        <card-sorter id="cards" class="site-width">
+          
+            
+            
+              
+              <a href="components/codelab-components/mango/context-params/index.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Context Parameters"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Context Parameters</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+              
+                <a href="components/codelab-components/mango/tables-sheets/index.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Maintaining tables with Google Sheets"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Tables with Google Sheets</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Using icons in Questions</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Remote Deployments of new Versions</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+              
+              
+             
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Using Bottom-Sheets</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+              
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Settings Component</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+              
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Growth Monitoring Displays</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Vaccination Component</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+             
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Workflow in Processes</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+              
+              
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Yellow Flags</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Reading and Writing NFC tokens</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Using Simprints Fingerprint Scanner</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Calling one Process within Another</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">App Configuration</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Modules</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Exporting Process Logic to PDF</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Retrieving objects from the database</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+              
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Screens</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+            
+             <a href="components/codelab-components/demo/codelab.html"  
+                 class="codelab-card category-about"
+                 data-category="About"
+                 data-title="Using Icons"
+                 data-duration="0"
+                 data-updated="2017-01-05T13:42:41Z"
+                 data-tags="android-dev-summit,babbq-2015,chrome-dev-summit,games,kiosk,polymer-summit,polytechnic,ubiquity,web"
+                 data-pin=""
+                 data-wait-for-ripple>
+                <div class="card-header about-bg">
+                  <div id="icon" class="category-icon"></div>
+                  </div>
+                <div class="description">Bounds</div>
+                <div class="card-footer">
+                  <paper-button>Start</paper-button>
+                  <div>
+                  <div class="card-updated">Updated Jan 5, 2017</div>
+                  </div>
+                </div>
+                <paper-ripple></paper-ripple>
+              </a>
+            
+        </card-sorter>
+      </main>
+
+      <footer id="footer">
+        <div class="footer-wrapper site-width">
+           
+         
+        </div>
+      </footer>
+
+      <div class="footerbar">
+        <div class="site-width layout horizontal center justified">
+           
+        </div>
+      </div>
+
+    </paper-header-panel>
+  </paper-drawer-panel>
+
+  <!-- <paper-toast id="caching-complete"
+               duration="6000"
+               text="Caching complete! This app will work offline.">
+  </paper-toast> -->
+
+  <!-- <platinum-sw-register auto-register
+                        clients-claim
+                        skip-waiting
+                        on-service-worker-installed="displayInstalledToast">
+    <platinum-sw-cache default-cache-strategy="networkFirst"
+                       precache-file="precache.json">
+    </platinum-sw-cache>
+    <platinum-sw-fetch handler="networkOnly"
+                       path="/preview/.*">
+    </platinum-sw-fetch>
+  </platinum-sw-register> -->
+
+  <script>
+    (function() {
+      // Temporary unregister any previous active SW.
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then(function(reg) {
+          reg.unregister();
+        });
+      }
+      // ------
+
+      // Define before app.js loads.
+      window.GA = 'UA-49880327-14';
+      window.GA_VIEW = '';
+    })();
+  </script>
+
+  <script src="https://codelabs.developers.google.com/scripts/app.js" async></script>
+
+
+</body>
+</html>

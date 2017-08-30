@@ -1,0 +1,278 @@
+<!--
+Copyright (c) 2015 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Mangologic - Context Parameters</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.8/webcomponents-lite.js" async></script>
+  <script>
+    window.Polymer = {
+      dom: 'shadow',
+      lazyRegister: 'max',
+      useNativeCSSProperties: true
+    };
+  </script>
+  <link rel="stylesheet"
+        href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,700">
+  <link rel="import" href="../../../iron-icons/iron-icons.html">
+  <link rel="import" href="../../../paper-button/paper-button.html">
+  <link rel="import" href="../../google-codelab-elements.html">
+  <style is="custom-style">
+    body {
+      font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial;
+      background: var(--google-codelab-background, --paper-grey-300);
+    }
+  </style>
+</head>
+<body class="fullbleed">
+
+  <google-codelab      
+                  
+                  title="Using Context Parameters"
+                  feedback-link="mailto:routen@thingsprime.com"
+                  environment="web"
+                  last-updated="2017-08-29">
+
+    <google-codelab-step label="Overview" duration="1">
+        
+        <p>Sometimes you need to have slightly different logic deployed to different parts of your user base.</p>
+        
+        <p>Most typically this would be along geographic lines: perhaps in one part of the country your users must apply a slightly
+        different procedure than in other parts of the country.</p>
+        
+        <p>To achieve this context-sensitive behaviour in an app, you can make use of Context Parameters</p>
+
+          <p>A "Context Parameter" is a parameter defined within a Deployment and which can be assigned different values for each Deployment Group
+        </p> 
+         
+<h3 class="checklist">What you'll learn</h3>
+<ul class="checklist">
+<li>How to define a Context Parameter</li>
+<li>How to assign values for the Context Parameter for different Groups.</li>
+<li>How to read the Context Parameter value within a Process to make the logic relative to location.</li>
+</ul>
+  
+        <h3>What you'll need</h3>
+<ul>
+<li>A Project defined including at least an App with at least one Process.</li>
+<li>A Deployment in which the App is deployed</li>
+</ul>
+        
+      </google-codelab-step>
+
+    <google-codelab-step label="Define a Context Parameter" duration="2">
+
+<h2>Go to Deployment and select the Config -> Parameters menu</h2>
+        <p/>
+        <img src="deployment-parameters.png" style="max-width: 843px">
+        
+        
+        <p/>
+        
+        <h2>Add a new Context Parameter</h2>
+        
+        <ol>
+            <li>Click the +Parameter button.</li>
+            <li>In the window which pops up, give a name for the context parameter.</li>
+            <li>Click Ok button to save.</li>
+        </ol>
+        
+        
+
+<aside class="special"><p>This name is like a variable name rather than a description, so use the same convention here - e.g. single word, no spaces.</p></aside>
+        
+        <p/>
+        <img src="name-context-param.png" style="max-width: 843px">
+        
+        
+        <p/>
+       <p/>
+ 
+<p></p> 
+
+ 
+
+      </google-codelab-step>
+
+      
+      
+      
+    <google-codelab-step label="Assign values" duration="3">
+        
+        
+        <h2>Select the Parameter to View Values</h2>
+        <p>
+        
+        The parameter you just created will appear in the list of "Group Context Parameters". 
+        </p>
+        
+        <p/>
+        Now, if you select the parameter, to the right will appear the Groups hierarchy defined in your Deployment. 
+        <p/>
+        If you had
+        already given values to this parameter, the values would appear beside the group names.
+        <p/>
+        <img src="param-selected.png" style="max-width: 843px">
+        
+        
+        <p/>
+        
+        <h2>Select a Group and (Re-)Assign a Value</h2>
+        <p/>
+        Now, add a value for a Group by doing this:
+        <ul>
+            <li>After selecting the Context Parameter "raincoat", select a Group from the hierarchy which appears on the right</li>
+             <li>An input box will appear above the Groups into which you can enter the value of the parameter for the group selected </li>
+             <li>Enter a value</li>
+               <li>Click Update button to save the value for that Group.</li>
+        </ul>
+        
+        <aside class="special"><p>In the image 
+            below we have selected the "raincoat" parameter and are entering the value "yes" for the "Facility Cloudy" Group</p></aside>
+         <p/>
+        
+        <p/>
+     
+        <p/>
+        <img src="assign-param-value.png" style="max-width: 643px">
+        
+        
+         
+        <p/>
+        
+        
+        <h2>Values are Inherited</h2>
+        <p/>
+         You might not want to assign values to individual Groups but instead assign values at a higher level in the hierarchy
+        and have any sub-groups take the same value.
+        <p/>
+        This is possible. In the example below, we have selected "South District" and given the value "no". This has been inherited 
+        by all Groups (and users) within South District.
+        
+         <p/>
+        <img src="inherit-values.png" style="max-width: 643px">
+        
+        <p/>
+        
+         <h2>Values can be Overridden</h2>
+        <p/>
+        But, having assigned a default for a district or region like that, we can nevertheless assign a specific value to a Group in that
+        hierarchy and thereby override that default value (as shown here, where we have overridden the "no" for South District for the Facility
+        Lowland)
+        <p/>
+         <img src="override-values.png" style="max-width: 643px">
+       
+        
+        
+       <p/>
+ 
+<p></p> 
+        
+     
+      </google-codelab-step>
+      
+      
+      
+      <google-codelab-step label="Read Value in a Process" duration="3">
+        
+        So now we have defined a Context Parameter called "raincoat" and assigned values to that parameter for each Group.
+          
+          <p/>
+          How do we use this in an App to make the behaviour sensitive to the user's location?
+          <p/>
+          There is a special Action type which reads the value of a Context Parameter into a variable (called a Context Variable).
+          After that, we can use the value of that Context Variable just like any other variable value<p/>
+          
+        <h2>Add Context Variable Action</h2>
+        
+        <p/>
+          <ul>
+            <li>Go into a Process in which you want to use the context-dependent values you have defined.</li>
+               <li>Select to add a "Create Context Variable" Action</li>
+          </ul>
+        <p/>
+        <img src="add-action.png" style="max-width: 600px">
+        
+        
+        <p/>
+        
+        <h2>Indicate Parameter name in action</h2>
+        
+         <p/>
+        Here, you are defining a variable, so you have to provide a variable name as usual.
+          <p/>
+          But you also need to give the name of the Context Parameter, since this variable will, when the app
+          is used, have whichever value you have assigned to the Group of the user.
+        
+        <p/>
+        <img src="action-definition.png" style="max-width: 843px">
+        
+        
+         
+        <p/>
+           <aside class="special"><p>The Parameter Name given here must match <b>exactly</b> the name of the parameter defined in the Deployment</p></aside>
+         <p/>
+       <p/>
+ 
+<p></p> 
+        
+     
+      </google-codelab-step>
+      
+      
+      
+      
+      <google-codelab-step label="Making Process Logic Context-Sensitive" duration="2">
+        
+          
+          Now there is a variable in the Process whose value will depend on the Group of the user (normally, this means
+          the geographical location).
+          <p/>
+          You can use the value just as with any other - you can display it to the user, or, more usually, you might want
+          to define and use a condition which depends on the value.
+          <p/>
+        
+        <h2>Define a  Condition based on the Context Variable value</h2>
+        
+        <p/>
+          <ul>
+              <li>Select to define a FIELD condition</li>
+            <li>Select the Context Variable</li>
+              <li>Define a comparison</li>
+          </ul>
+        <p/>
+        <img src="raincoat-needed.png" style="max-width: 600px">
+        
+        
+       
+       <p/>
+          Now you can use this condition as a precondition, or in defining other meta-conditions.
+          <p/>
+          Your app is now able to perform different calculations or offer different advice, depending  on the location of the user!
+ 
+<p></p> 
+        
+     
+      </google-codelab-step>
+      
+
+  </google-codelab>
+
+</body>
+</html>

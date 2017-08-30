@@ -1,0 +1,360 @@
+<!--
+Copyright (c) 2015 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Mangologic - Tables with Google Sheets</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.8/webcomponents-lite.js" async></script>
+  <script>
+    window.Polymer = {
+      dom: 'shadow',
+      lazyRegister: 'max',
+      useNativeCSSProperties: true
+    };
+  </script>
+  <link rel="stylesheet"
+        href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,700">
+  <link rel="import" href="../../../iron-icons/iron-icons.html">
+  <link rel="import" href="../../../paper-button/paper-button.html">
+  <link rel="import" href="../../google-codelab-elements.html">
+  <style is="custom-style">
+    body {
+      font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial;
+      background: var(--google-codelab-background, --paper-grey-300);
+    }
+  </style>
+</head>
+<body class="fullbleed">
+
+  <google-codelab      
+                  
+                  title="Lookup Tables with GoogleSheets"
+                  feedback-link="mailto:routen@thingsprime.com"
+                  environment="web"
+                  last-updated="2017-08-29">
+
+    <google-codelab-step label="Overview" duration="1">
+        
+        <p>A Project can use Lookup Tables to prepopulate an app database with some (usually) static data.</p>
+        
+        <p>A particularly convenient way of compiling and maintaining this data is by using <a href="https://www.google.com/sheets/about/"> GoogleSheets</a></p> 
+         
+        <h3 class="checklist">What you'll learn</h3>
+        
+        <ul class="checklist">
+            <li>How to create a Lookup Table</li>
+            <li>How to populate the table with data from a GoogleSheet.</li>
+        </ul>
+   
+        <h3>What you'll need</h3>
+<ul>
+    <li>A google account via which you can use GoogleSheets.</li>
+</ul>
+        
+    </google-codelab-step>
+
+    <google-codelab-step label="Sample Spreadsheet: Addresses" duration="2">
+
+
+      
+       
+        <p>
+            A Lookup Table typically contains information which your app needs to make use of
+            but which would be too laborious to enter as Lookup Items, or individual nodes in a process.
+        </p>
+        <p>
+            It is information which you might typically use a spreadsheet to maintain.
+        </p>
+          <p>Let us take an example
+            spreadsheet containing components of addresses in Tanzania (shown here).
+        </p>
+      
+        <aside class="special"><p>You can access this example GoogleSheet here: <a target="_sheet" href="https://docs.google.com/spreadsheets/d/1NtYzp1aYjOkXTEr86aOaEaCAnbRCBq-XrCqJuzuh1Yo/edit#gid=0">addresses</a>
+            </p></aside>
+           
+        
+         <p>
+             <img src="spreadsheet.png" style="max-width: 443px">
+        </p>
+         <p>
+            
+       </p>
+ 
+    
+        
+     
+        
+      </google-codelab-step>
+
+      
+      
+      
+    <google-codelab-step label="Create Object" duration="3">
+         
+        <p>
+            The data from a Lookup Table can be used in an app in various ways and one reason 
+            for this flexibility is that the data will be stored in the device SQLite database.
+        </p>
+         <p>
+             In order to achieve this database storage of the data, we need to define an Object type in Mangologic
+             which mirrors the structure of the data in the spreadsheet. Each row of the spreadsheet
+             will be an instance of that Object type available within Mangologic.
+        </p>
+        
+        <p>So now we will define the Object type we need. Let us call it <b>address</b>.</p>
+            
+        <ul>
+            <li>Go to the Objects menu</li>
+             <li>Click +Object Type button</li>
+             <li>Enter the name of the Object Type you want to create (<b>address</b>)</li>
+             <li>Click Ok</li>
+        </ul>
+        
+        <p>Now you will see the address Object Type in the list of Object Types. </p>
+        
+         <p>
+             <img src="objectsmenu.png" style="max-width: 843px"/>
+        </p>
+        
+        <h2>Add fields representing spreadsheet columns</h2>
+         <p>
+             
+        Click on the button in the "Go" column in the address row to add fields to that object.
+             
+      </p>
+       <p>
+        Then select the menu option  +Add -> Field
+             
+              
+        </p>
+ <p>
+             <img src="addfield.png" style="max-width: 843px"/>
+        </p>
+        
+      <p>
+            Look again at the spreadsheet - there are four  fields in the data: village, ward, district, region.
+          
+        </p>
+          
+          <p>
+             <img src="spreadsheet.png" style="max-width: 443px">
+        </p>
+        
+        <p>
+         You will need to add a field to the address object representing each of these columns. Make each of these fields a TEXT field. 
+            Here is what the window looks like as we are adding the first of these TEXT fields.
+        </p>
+         <p>
+             <img src="addfieldform.png" style="max-width: 543px"/>
+        </p>
+ 
+         
+      <p>
+           After the four fields are added, the definition of the address object should look like this:
+     
+             <img src="fieldsdefined.png" style="max-width: 843px"/>
+    </p>
+        
+     
+      </google-codelab-step>
+      
+      
+      
+      <google-codelab-step label="Define Lookup Table" duration="3">
+        
+        
+          Now we have defined an Object to represent the data, we can go to the Lookups -> Tables menu and define the table itself.
+         
+            <ul>
+            
+                <li>Click  +Add button</li>
+              
+            </ul>
+         <img src="lookups-tables-menu.png" style="max-width: 843px"/>
+            <ul>
+            
+                <li>Enter a name for the table (Note (we will emphasise this later) this should be same as tab name on the GoogleSheet)</li>
+               <!-- <li>Enter a description of the table's purpose</li> -->
+                <li>For the "object describing the rows", select the <b>address</b> object</li>
+              
+            </ul>
+         <p>
+           <img src="addtable.png" style="max-width: 843px"/>
+      </p>
+            <p>
+                
+                So now when you select Lookup -> Tables menu, you should see the Lookup Table defined. Of course, 
+                it has no data yet. The remaining task is to see how to get the data from the GoogleSheet into this table.
+                
+           <img src="lookuptables-table.png" style="max-width: 843px"/>
+      </p>
+      </google-codelab-step>
+      
+      
+       <google-codelab-step label="Matching Needed" duration="2">
+         <h3>IMPORTANT INFORMATION: MATCHING NEEDED</h3>
+         <p></p>
+        In order for uploading of the data from GoogleSheets to work, certain things have to match.
+             <p></p>
+           <paper-icon-button icon="error-outline" style="color: blue;"></paper-icon-button>
+              <h4>The  name  of the <b>Lookup Table</b> in Mangologic must be the same as the <b>tab</b> in the GoogleSheet</h4>
+              <p></p>
+             
+         
+           
+            <div class="horizontal">
+                 <img src="addtable.png" style="max-width: 350px"/>
+                <img src="googlesheet-tab.png" style="max-width: 350px"/>
+           </div>
+           
+           <p></p>
+           <paper-icon-button icon="error-outline" style="color: blue;"></paper-icon-button>
+              <h4>The  names of the <b>object fields</b> must match   the <b>names of the columns</b> in the GoogleSheet</h4>
+               <p></p>
+             
+      <div class="horizontal">
+                 <img src="fieldsdefined.png" style="max-width: 350px"/>
+                <img src="spreadsheet.png" style="max-width: 350px"/>
+           </div>
+           
+           <aside class="special"> 
+               Note:
+               <ul>
+               <li>
+                   The order of the columns in the spreadsheet are not important. It is just important that for each column,
+                   there is a field in the object with the same name as the column.
+                   </li>
+               <li>When the column names are matched against the object field names it is done in a case insensitive way (Villages can match villages).
+                   </li>
+                   <li> It is assumed that the first row of the GoogleSheet contains the column headers.
+                   </li>
+               </ul>
+               
+           </aside>
+           
+        </google-codelab-step>
+        
+      
+      
+      <google-codelab-step label="Get Shareable GoogleSheet Link" duration="2">
+        
+          <p>
+          Fundamentally, we link the sheet to Mangologic by copying and pasting a "shareable link" from GoogleSheets into Mangologic.
+          Here we explain how to get that shareable link.
+          </p>
+           <p>
+            When you view the google sheet, you can see the large blue SHARE button at top right. Click on that..
+          </p>
+            <p>
+        <img src="googlesheets-share.png" style="max-width: 600px"/>
+        </p>
+        <p>
+          
+          Now choose the way of sharing which is: anyone with the link can access the spreadsheet. Click Save.
+          </p>
+         
+        <p>
+        <img src="googlesheets-anyonewithlink.png" style="max-width: 600px"/>
+         </p>
+       
+          
+          <p>
+          
+          Now you can actually get the link via the "get shareable link" or "copy link" buttons.
+              This copies into your "clipboard".
+             
+              
+          </p>
+           <p>In the next step, we find out where we need to paste it into Mangologic.</p>
+          
+       <p>
+        <img src="googlesheets-shareablelink-url.png" style="max-width: 600px"/>
+        </p>
+          
+         
+          
+          
+      </google-codelab-step>
+      
+      
+        <google-codelab-step label="Upload and View Data" duration="2">
+        
+            To see where to paste the shareable link in Mangologic, navigate in the following way within your project:
+            
+            <ol>
+            <li>Select the Lookups menu</li>
+                 <li>Select the Tables sub-menu</li>
+                 <li>Click on <b>addresses</b> table in the list</li>
+                 <li>On the right hand side, click <b>Content</b> menu</li>
+                   <li>In box below, Click <b>GoogleSheets</b></li>
+            </ol>
+         
+         
+               
+                  <p> 
+        <img src="lookuptables-content.png" style="max-width: 600px">
+          </p>
+            <h2>Paste in the Link</h2>
+        <p>
+             Now you can copy and paste in the Shareable GoogleSheets Link:
+            </p>
+             <p>
+            Clicking Update button after you have pasted the link will cause Mangologic :
+                  </p>
+                 <ul>
+                    <li>to upload the data from the GoogleSheet into the addresses table</li>
+                    <li>if successful, to store the link along with table</li>
+                </ul>
+                 
+            <p>
+           
+                <img src="lookuptables-paste-googlesheetslink.png" style="max-width: 600px">
+          </p>
+            
+           <h2>Check the data in the table</h2>
+        <p>
+            Click View Button to view the data in the table.
+            </p>
+         <img src="seetablecontents.png" style="max-width: 600px">
+       
+     
+      </google-codelab-step>
+      
+      <google-codelab-step label="Updating the Data" duration="2">
+          
+           <p>
+             If things change and you need to edit the contents of the GoogleSheet to change the data, updating
+               the Lookup Table in your Mangologic project is extremely easy.
+            </p>
+          <p>
+          The only thing you have to do is to navigate to the table and click the Update button. That is it!
+          </p>
+          <p>
+           
+                <img src="lookuptables-paste-googlesheetslink.png" style="max-width: 600px">
+          </p>
+          
+    </google-codelab-step>
+
+       
+      
+  </google-codelab>
+
+</body>
+</html>
